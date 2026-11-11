@@ -63,6 +63,8 @@ Review web app  (runs as the person visiting it)
 3. Create an HTML file named **`Review`** and paste in `Review.html`.
 4. Save.
 
+The manifest already turns on the **Admin Directory** advanced service (`AdminDirectory`), so you don't need to add it by hand.
+
 ### 4. Run it once by hand
 
 As the admin who will own the trigger, run these from the editor in this order:
