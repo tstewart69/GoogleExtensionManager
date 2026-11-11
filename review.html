@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<base target="_top">
+<meta charset="utf-8">
+<title>Extension Review</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue: #2563EB;
+    --cyan: #0EA5E9;
+    --purple: #7C3AED;
+    --violet: #8B5CF6;
+    --teal: #14B8A6;
+    --ink: #000000;
+    --ink-2: #333333;
+    --ink-3: #6B7280;
+    --surface: #FAFCFF;
+    --card: #FFFFFF;
+    --line: #E6ECF5;
+    --danger: #D6334A;
+    --gradient: linear-gradient(270deg, var(--cyan) 0%, var(--blue) 52%, var(--purple) 98%);
+    --gradient-border: linear-gradient(90deg, var(--blue) 0%, var(--violet) 100%);
+    --shadow: 0 1px 2px rgba(16, 24, 40, .04), 0 8px 24px rgba(37, 99, 235, .06);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: Inter, Helvetica, system-ui, sans-serif;
+    font-weight: 300;
+    color: var(--ink);
+    background: var(--surface);
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--blue); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* Hero */
+  .hero { background: var(--gradient); color: #fff; padding: 40px 16px 72px; }
+  .wrap { max-width: 1120px; margin: 0 auto; }
+  .eyebrow { font-size: 13px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; opacity: .85; }
+  .hero h1 { font-size: 44px; line-height: 1.15; font-weight: 400; margin: 8px 0 12px; }
+  .hero-meta { display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: 15px; opacity: .95; }
+  .hero-meta strong { font-weight: 700; }
+  .role { display: inline-block; padding: 3px 12px; border-radius: 100px; background: rgba(255,255,255,.18); font-size: 13px; font-weight: 500; }
+
+  /* Filters */
+  .filters {
+    margin: -44px auto 24px; background: var(--card); border-radius: 16px; box-shadow: var(--shadow);
+    padding: 16px; display: grid; gap: 12px; grid-template-columns: 2fr repeat(4, 1fr) auto; align-items: end;
+  }
+  .field label { display: block; font-size: 12px; font-weight: 500; color: var(--ink-3); margin: 0 0 6px 4px; }
+  .field input, .field select {
+    width: 100%; height: 42px; padding: 0 16px; border: 1px solid var(--line); border-radius: 100px;
+    font: inherit; font-size: 14px; color: var(--ink); background: #fff; outline: none;
+  }
+  .field input:focus, .field select:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(37,99,235,.12); }
+  .link-btn { background: none; border: 0; font: inherit; font-size: 14px; font-weight: 500; color: var(--blue); cursor: pointer; height: 42px; padding: 0 8px; }
+
+  .summary { display: flex; justify-content: space-between; align-items: center; margin: 0 0 16px; font-size: 14px; color: var(--ink-2); }
+  .summary strong { font-weight: 700; color: var(--ink); }
+
+  /* Cards */
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px; padding-bottom: 48px; }
+  .card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 20px;
+    display: flex; flex-direction: column; gap: 14px; box-shadow: var(--shadow); transition: opacity .2s, transform .2s;
+  }
+  .card.leaving { opacity: 0; transform: scale(.98); }
+  .card-head { display: flex; gap: 14px; align-items: flex-start; }
+  .score {
+    flex: none; width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center;
+    font-size: 20px; font-weight: 700; color: #fff; background: var(--gradient);
+  }
+  .score.hot { background: linear-gradient(135deg, var(--purple), var(--danger)); }
+  .title { min-width: 0; }
+  .title h3 { margin: 0; font-size: 17px; font-weight: 700; line-height: 1.3; overflow-wrap: anywhere; }
+  .title .pub { font-size: 13px; color: var(--ink-3); margin-top: 2px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip { font-size: 12px; font-weight: 500; padding: 4px 10px; border-radius: 100px; background: #EEF5FF; color: var(--blue); }
+  .chip.hard { background: #F6ECFD; color: var(--purple); }
+  .chip.due { background: #E5FBFB; color: #007C7B; }
+  .chip.reason { background: #F4F6FA; color: var(--ink-2); font-weight: 400; }
+  .stats { display: flex; gap: 20px; font-size: 13px; color: var(--ink-2); }
+  .stats strong { display: block; font-size: 18px; font-weight: 700; color: var(--ink); }
+  .store { font-size: 14px; font-weight: 500; }
+
+  /* Buttons */
+  .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; padding-top: 4px; }
+  .btn {
+    font: inherit; font-size: 14px; font-weight: 500; border-radius: 100px; padding: 10px 20px; cursor: pointer;
+    border: 1px solid transparent; transition: filter .15s, background .15s;
+  }
+  .btn:disabled { opacity: .5; cursor: progress; }
+  .btn-primary { background: var(--blue); color: #fff; }
+  .btn-primary:hover { filter: brightness(1.08); }
+  .btn-outline {
+    color: var(--blue);
+    background: linear-gradient(#fff, #fff) padding-box, var(--gradient-border) border-box;
+  }
+  .btn-outline:hover { background: linear-gradient(#F5F9FF, #F5F9FF) padding-box, var(--gradient-border) border-box; }
+  .btn-danger { background: #fff; color: var(--danger); border-color: #F2C4CB; }
+  .btn-danger:hover { background: #FDF2F4; }
+  .btn-danger.solid { background: var(--danger); color: #fff; border-color: var(--danger); }
+  .readonly { font-size: 13px; color: var(--ink-3); margin-top: auto; }
+
+  .empty { text-align: center; padding: 64px 16px; color: var(--ink-2); }
+  .empty h2 { font-weight: 700; font-size: 22px; margin: 0 0 6px; color: var(--ink); }
+
+  /* Modal + toast */
+  .backdrop { position: fixed; inset: 0; background: rgba(0,0,0,.5); display: none; place-items: center; padding: 16px; z-index: 10; }
+  .backdrop.open { display: grid; }
+  .modal { background: #fff; border-radius: 16px; max-width: 480px; width: 100%; padding: 24px; }
+  .modal h2 { margin: 0 0 8px; font-size: 20px; font-weight: 700; }
+  .modal p { margin: 0 0 16px; font-size: 14px; line-height: 1.5; color: var(--ink-2); }
+  .modal textarea { width: 100%; min-height: 80px; border: 1px solid var(--line); border-radius: 12px; padding: 12px; font: inherit; font-size: 14px; resize: vertical; }
+  .modal .actions { justify-content: flex-end; margin-top: 16px; }
+  .toast {
+    position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%) translateY(20px); opacity: 0;
+    background: var(--ink); color: #fff; padding: 12px 20px; border-radius: 100px; font-size: 14px; font-weight: 400;
+    transition: all .25s; z-index: 20; max-width: calc(100% - 32px);
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  .toast.err { background: var(--danger); }
+  .loading { text-align: center; padding: 64px 16px; color: var(--ink-3); }
+
+  @media (max-width: 900px) {
+    .filters { grid-template-columns: 1fr 1fr; }
+    .filters .field:first-child { grid-column: 1 / -1; }
+    .hero h1 { font-size: 34px; }
+  }
+  @media (max-width: 480px) {
+    .grid { grid-template-columns: 1fr; }
+    .filters { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+  <header class="hero">
+    <div class="wrap">
+      <div class="eyebrow">IT · Chrome Extensions</div>
+      <h1>Extension Review</h1>
+      <div class="hero-meta">
+        <span><strong id="pendingCount">–</strong> pending</span>
+        <span id="lastScored"></span>
+        <span class="role" id="role"></span>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap" style="padding: 0 16px;">
+    <section class="filters" aria-label="Filters">
+      <div class="field">
+        <label for="q">Search</label>
+        <input id="q" type="search" placeholder="Name, publisher, reason, or ID">
+      </div>
+      <div class="field">
+        <label for="trigger">Trigger</label>
+        <select id="trigger">
+          <option value="all">All</option>
+          <option value="Hard flag">Hard flag</option>
+          <option value="Score">Score</option>
+          <option value="Review due">Review due</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="minScore">Min score</label>
+        <input id="minScore" type="number" min="0" placeholder="0">
+      </div>
+      <div class="field">
+        <label for="minDevices">Min devices</label>
+        <input id="minDevices" type="number" min="0" placeholder="0">
+      </div>
+      <div class="field">
+        <label for="sort">Sort by</label>
+        <select id="sort">
+          <option value="score">Score</option>
+          <option value="devices">Browser devices</option>
+          <option value="name">Name</option>
+        </select>
+      </div>
+      <button class="link-btn" id="reset" type="button">Reset</button>
+    </section>
+
+    <div class="summary"><span id="showing"></span></div>
+    <section class="grid" id="grid"><div class="loading">Loading…</div></section>
+  </main>
+
+  <div class="backdrop" id="denyModal" role="dialog" aria-modal="true" aria-labelledby="denyTitle">
+    <div class="modal">
+      <h2 id="denyTitle">Deny extension?</h2>
+      <p id="denyText"></p>
+      <textarea id="denyNote" placeholder="Reason (optional, saved to the Decisions tab)"></textarea>
+      <div class="actions">
+        <button class="btn btn-outline" id="denyCancel" type="button">Cancel</button>
+        <button class="btn btn-danger solid" id="denyConfirm" type="button">Deny and uninstall</button>
+      </div>
+    </div>
+  </div>
+  <div class="toast" id="toast" role="status"></div>
+
+<script>
+  // Shows any script error on the page instead of leaving "Loading…" forever.
+  window.addEventListener('error', function (e) {
+    var g = document.getElementById('grid');
+    if (g) g.innerHTML = '<div class="empty"><h2>Page error</h2>' +
+      String(e.message || e).replace(/[&<>]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]; }) +
+      (e.lineno ? ' (line ' + e.lineno + ')' : '') + '</div>';
+  });
+</script>
+<script>
+(function () {
+  'use strict';
+  const state = { items: [], isAdmin: false, pendingDeny: null };
+  const byId = (id) => document.getElementById(id);
+  const FILTER_IDS = ['q', 'trigger', 'minScore', 'minDevices', 'sort'];
+  const hasServer = typeof google !== 'undefined' && google.script && google.script.run;
+
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  }
+
+  function filtered() {
+    const q = byId('q').value.trim().toLowerCase();
+    const trig = byId('trigger').value;
+    const minScore = Number(byId('minScore').value) || 0;
+    const minDevices = Number(byId('minDevices').value) || 0;
+    const sort = byId('sort').value;
+    return state.items
+      .filter((i) => trig === 'all' || i.trigger === trig)
+      .filter((i) => i.score >= minScore && i.devices >= minDevices)
+      .filter((i) => !q || [i.name, i.publisher, i.reasons, i.appId].join(' ').toLowerCase().includes(q))
+      .sort((a, b) => sort === 'name' ? a.name.localeCompare(b.name)
+        : sort === 'devices' ? b.devices - a.devices || b.score - a.score
+        : b.score - a.score || b.devices - a.devices);
+  }
+
+  function chipClass(t) { return t === 'Hard flag' ? 'hard' : t === 'Review due' ? 'due' : ''; }
+
+  function card(i) {
+    const reasons = i.reasons.split(';').map((r) => r.trim()).filter(Boolean).slice(0, 6)
+      .map((r) => `<span class="chip reason">${esc(r)}</span>`).join('');
+    const store = String(i.storeUrl).indexOf('https:') === 0
+      ? `<a class="store" href="${esc(i.storeUrl)}" target="_blank" rel="noopener noreferrer">View in Chrome Web Store ↗</a>` : '';
+    const actions = state.isAdmin ? `
+      <div class="actions">
+        <button class="btn btn-primary" data-act="APPROVED" data-id="${esc(i.appId)}">Approve</button>
+        <button class="btn btn-outline" data-act="APPROVED_REVIEW" data-id="${esc(i.appId)}">Approve, review yearly</button>
+        <button class="btn btn-danger" data-act="DENIED" data-id="${esc(i.appId)}">Deny</button>
+      </div>` : '<div class="readonly">View only. System admins make decisions.</div>';
+    return `
+      <article class="card" id="card-${esc(i.appId)}">
+        <div class="card-head">
+          <div class="score ${i.score >= 7 ? 'hot' : ''}" title="Rubric score">${esc(i.score)}</div>
+          <div class="title">
+            <h3>${esc(i.name)}</h3>
+            <div class="pub">${esc(i.publisher || 'Unknown publisher')}${i.type ? ' · ' + esc(i.type) : ''}</div>
+          </div>
+        </div>
+        <div class="chips"><span class="chip ${chipClass(i.trigger)}">${esc(i.trigger)}</span>${reasons}</div>
+        <div class="stats">
+          <div><strong>${esc(i.devices.toLocaleString())}</strong>browser devices</div>
+          <div><strong>${esc(i.osUsers.toLocaleString())}</strong>ChromeOS users</div>
+        </div>
+        ${store}
+        ${actions}
+      </article>`;
+  }
+
+  function render() {
+    const list = filtered();
+    byId('pendingCount').textContent = state.items.length;
+    byId('showing').innerHTML = `Showing <strong>${list.length}</strong> of ${state.items.length}`;
+    byId('grid').innerHTML = list.length ? list.map(card).join('') : state.items.length
+      ? '<div class="empty"><h2>No matches</h2>Adjust or reset the filters.</div>'
+      : '<div class="empty"><h2>All clear</h2>Nothing is waiting for review.</div>';
+  }
+
+  function toast(msg, isErr) {
+    const t = byId('toast');
+    t.textContent = msg;
+    t.className = 'toast show' + (isErr ? ' err' : '');
+    clearTimeout(toast.timer);
+    toast.timer = setTimeout(() => { t.className = 'toast' + (isErr ? ' err' : ''); }, 3500);
+  }
+
+  function decide(appId, decision, note) {
+    const item = state.items.find((i) => i.appId === appId);
+    const el = byId('card-' + appId);
+    el && el.querySelectorAll('button').forEach((b) => (b.disabled = true));
+    const done = () => {
+      state.items = state.items.filter((i) => i.appId !== appId);
+      el && el.classList.add('leaving');
+      setTimeout(render, 200);
+      const label = { APPROVED: 'Approved', APPROVED_REVIEW: 'Approved, review due in a year', DENIED: 'Denied and uninstalled at root' }[decision];
+      toast(`${label}: ${item ? item.name : appId}`);
+    };
+    const fail = (err) => {
+      el && el.querySelectorAll('button').forEach((b) => (b.disabled = false));
+      toast((err && err.message) || String(err), true);
+    };
+    if (!hasServer) return setTimeout(done, 300);
+    google.script.run.withSuccessHandler(done).withFailureHandler(fail).recordDecision(appId, decision, note || '');
+  }
+
+  function openDeny(appId) {
+    const item = state.items.find((i) => i.appId === appId);
+    state.pendingDeny = appId;
+    byId('denyText').innerHTML = `<strong>${esc(item.name)}</strong> will be set to Block and uninstall at the root OU. ` +
+      `It comes off all ${esc(item.devices.toLocaleString())} browser devices that report it.`;
+    byId('denyNote').value = '';
+    byId('denyModal').classList.add('open');
+    byId('denyConfirm').focus();
+  }
+  function closeDeny() { byId('denyModal').classList.remove('open'); state.pendingDeny = null; }
+
+  byId('grid').addEventListener('click', (e) => {
+    const b = e.target.closest('button[data-act]');
+    if (!b) return;
+    if (b.dataset.act === 'DENIED') openDeny(b.dataset.id);
+    else decide(b.dataset.id, b.dataset.act);
+  });
+  byId('denyCancel').addEventListener('click', closeDeny);
+  byId('denyModal').addEventListener('click', (e) => { if (e.target === byId('denyModal')) closeDeny(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeDeny(); });
+  byId('denyConfirm').addEventListener('click', () => {
+    const id = state.pendingDeny, note = byId('denyNote').value;
+    closeDeny();
+    decide(id, 'DENIED', note);
+  });
+  FILTER_IDS.forEach((id) => byId(id).addEventListener('input', render));
+  byId('reset').addEventListener('click', () => {
+    byId('q').value = ''; byId('trigger').value = 'all'; byId('minScore').value = ''; byId('minDevices').value = ''; byId('sort').value = 'score';
+    render();
+  });
+
+  function applyParams(p) {
+    FILTER_IDS.forEach((id) => { if (p && p[id] != null && p[id] !== '') byId(id).value = p[id]; });
+  }
+
+  function showError(msg) {
+    byId('grid').innerHTML = `<div class="empty"><h2>Couldn't load</h2>${esc(msg)}</div>`;
+  }
+
+  function load(raw) {
+    clearTimeout(load.timer);
+    let data;
+    try {
+      data = typeof raw === 'string' ? JSON.parse(raw) : raw;
+      if (!data) throw new Error('The server returned nothing. Check Executions for getReviewData.');
+    } catch (e) { return showError(e.message); }
+    state.items = data.items || [];
+    state.isAdmin = !!data.isAdmin;
+    byId('role').textContent = (data.isAdmin ? 'Admin' : 'Viewer') + (data.user ? ' · ' + data.user : '');
+    byId('lastScored').textContent = data.lastScored ? 'Last scored ' + new Date(data.lastScored).toLocaleString() : '';
+    try { render(); } catch (e) { showError('Render failed: ' + e.message); }
+  }
+
+  if (hasServer) {
+    load.timer = setTimeout(() => showError('Still waiting on the server after 30 seconds. Check Executions for getReviewData.'), 30000);
+    // ?minDevices=10&trigger=Hard%20flag etc. prefill the filters
+    google.script.url.getLocation((loc) => applyParams(loc.parameter));
+    google.script.run
+      .withSuccessHandler(load)
+      .withFailureHandler((err) => { clearTimeout(load.timer); showError(err.message || err); })
+      .getReviewData();
+  } else {
+    // Local preview with sample data
+    load({
+      user: 'preview@example.com', isAdmin: true, lastScored: new Date().toISOString(),
+      items: [
+        { appId: 'aaaabbbbccccddddeeeeffffgggghhhh', name: 'Free AI Writing Assistant', publisher: 'example-dev', type: 'EXTENSION', score: 9, trigger: 'Hard flag', reasons: 'keyword:AI; keyword:free; site:all; perm-high:cookies,history; reviews:4', devices: 142, osUsers: 0, storeUrl: 'https://chromewebstore.google.com/detail/aaaabbbbccccddddeeeeffffgggghhhh' },
+        { appId: 'bbbbccccddddeeeeffffgggghhhhiiii', name: 'Tab Organizer Pro', publisher: 'Acme Tools', type: 'EXTENSION', score: 7, trigger: 'Score', reasons: 'site:all; perm-high:webRequest; perm-med:tabs,scripting; stale:27mo', devices: 38, osUsers: 2, storeUrl: 'https://chromewebstore.google.com/detail/bbbbccccddddeeeeffffgggghhhhiiii' },
+        { appId: 'ccccddddeeeeffffgggghhhhiiiijjjj', name: 'Dark Ocean Theme', publisher: 'themes4u', type: 'THEME', score: 2, trigger: 'Hard flag', reasons: 'theme-with-access; site:all', devices: 6, osUsers: 0, storeUrl: 'https://chromewebstore.google.com/detail/ccccddddeeeeffffgggghhhhiiiijjjj' },
+        { appId: 'ddddeeeeffffgggghhhhiiiijjjjkkkk', name: 'Grammarly', publisher: 'Grammarly', type: 'EXTENSION', score: 3, trigger: 'Review due', reasons: 'yearly-review-due; site:all', devices: 412, osUsers: 5, storeUrl: 'https://chromewebstore.google.com/detail/ddddeeeeffffgggghhhhiiiijjjjkkkk' },
+      ],
+    });
+  }
+})();
+</script>
+</body>
+</html>
