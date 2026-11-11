@@ -37,7 +37,7 @@ Review web app  (runs as the person visiting it)
 
 - A Google Workspace super admin, or an admin with a custom role that includes the **Chrome Management** privileges (reports, app details, and settings, including *Manage Application Settings*) and read access to **Organizational Units**. This person owns the script and the daily trigger.
 - A Google Cloud project you can enable APIs in.
-- At least one child OU under the root, or the root OU ID on hand (see [Configuration](#configuration)).
+- At least one child OU under the root, or the root OU ID on hand.
 - Optional: a Slack incoming webhook for alerts.
 
 ## Setup
@@ -67,8 +67,6 @@ Review web app  (runs as the person visiting it)
 4. Save.
 
 The manifest already turns on the **Admin Directory** advanced service (`AdminDirectory`), so you don't need to add it by hand.
-
-> **Using clasp instead?** Run `clasp clone <scriptId>` into this repo, then `clasp push` to upload. Keep `.clasp.json` out of the repo if each environment uses its own script ID.
 
 ### 4. Run it once by hand
 
