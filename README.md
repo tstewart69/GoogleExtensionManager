@@ -27,10 +27,10 @@ Review web app  (runs as the person visiting it)
 
 | File | Purpose |
 |---|---|
-| `InstalledExtensionsInventory.gs` | Pulls the installed-extension report and Web Store details, writes the **Installed Extensions** tab. Also holds the shared `get_`/`post_` API helpers and the `SHEET_ID` / `ROOT_OU_ID` settings. |
-| `ExtensionRubric.gs` | Scores every row and writes the flagged ones to the **Needs Review** tab. All thresholds live in the `RUBRIC` object. |
-| `ExtensionReview.gs` | Web app backend, the `dailySync()` entry point, the Decisions log, Slack alerts, and the admin check. |
-| `Review.html` | The review page UI. It must be named exactly `Review` in the Apps Script editor. |
+| `Pull_extensions.gs` | Pulls the installed-extension report and Web Store details, writes the **Installed Extensions** tab. Also holds the shared `get_`/`post_` API helpers and the `SHEET_ID` / `ROOT_OU_ID` settings. |
+| `rubric.gs` | Scores every row and writes the flagged ones to the **Needs Review** tab. All thresholds live in the `RUBRIC` object. |
+| `Reviewapp.gs` | Web app backend, the `dailySync()` entry point, the Decisions log, Slack alerts, and the admin check. |
+| `review.html` | The review page UI. It must be named exactly `Review` in the Apps Script editor. |
 | `appsscript.json` | Manifest: OAuth scopes, the Admin Directory advanced service, and web app settings. |
 
 ## Prerequisites
