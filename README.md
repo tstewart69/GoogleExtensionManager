@@ -1,5 +1,8 @@
 # Chrome Extension Review
 
+> [!WARNING]
+> **Use at your own risk.** I put this together using a combination of AI and my own scripting knowledge. Review the code and test it in your environment before you rely on it. The **Deny** action blocks and uninstalls extensions across your whole organization.
+
 A Google Apps Script tool that inventories every Chrome extension installed across the Google Workspace tenant, scores each one against a risk rubric, and gives IT admins a web page where they approve or deny what gets flagged. Denying an extension blocks and uninstalls it at the root OU. New flags are posted to Slack.
 
 ## How it works
@@ -34,7 +37,7 @@ Review web app  (runs as the person visiting it)
 
 - A Google Workspace super admin, or an admin with a custom role that includes the **Chrome Management** privileges (reports, app details, and settings, including *Manage Application Settings*) and read access to **Organizational Units**. This person owns the script and the daily trigger.
 - A Google Cloud project you can enable APIs in.
-- At least one child OU under the root, or the root OU ID on hand.
+- At least one child OU under the root, or the root OU ID on hand (see [Configuration](#configuration)).
 - Optional: a Slack incoming webhook for alerts.
 
 ## Setup
@@ -64,6 +67,8 @@ Review web app  (runs as the person visiting it)
 4. Save.
 
 The manifest already turns on the **Admin Directory** advanced service (`AdminDirectory`), so you don't need to add it by hand.
+
+> **Using clasp instead?** Run `clasp clone <scriptId>` into this repo, then `clasp push` to upload. Keep `.clasp.json` out of the repo if each environment uses its own script ID.
 
 ### 4. Run it once by hand
 
